@@ -11,10 +11,13 @@ engines:
         enabled: false
       GoLint/Naming/MixedCaps:
         enabled: false
+  shellcheck:
+    enabled: true
 
 ratings:
   paths:
     - "**.go"
+    - "**.bash"
 
 exclude_paths:
   - test/
