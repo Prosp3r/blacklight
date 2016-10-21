@@ -191,7 +191,7 @@ func co(m *Meta) {
 	source := NewSource(filename)
 	source.code = loadFile(filename)
 	source = parse(source)
-	file_bc, _ := compile(source.tokens, filename)
+	file_bc, _ := compile(source)
 
 	m.Current().Push(out)
 	m.Current().Push(in)
@@ -240,7 +240,7 @@ func do(m *Meta) {
 	source := NewSource(filename)
 	source.code = loadFile(filename)
 	source = parse(source)
-	file_bc, _ := compile(source.tokens, filename)
+	file_bc, _ := compile(source)
 
 	doBC(m, file_bc)
 }
@@ -251,7 +251,7 @@ func bload(m *Meta) {
 	source := NewSource(filename)
 	source.code = loadFile(filename)
 	source = parse(source)
-	file_bc, _ := compile(source.tokens, filename)
+	file_bc, _ := compile(source)
 	m.Current().Push(B(file_bc))
 }
 
@@ -652,7 +652,7 @@ func t_to_b(m *Meta) {
 	source.filename = "<t-to-b>"
 	source.code = []rune(string(m.Current().Pop().(T)))
 	source = parse(source)
-	ops, _ := compile(source.tokens, "<t-to-b>")
+	ops, _ := compile(source)
 	b := B(ops)
 	m.Current().Push(b)
 }
