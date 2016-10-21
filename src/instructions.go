@@ -188,9 +188,10 @@ func co(m *Meta) {
 	stack.Push(in)
 	stack.Push(out)
 
-	code := loadFile(filename)
-	tokens := parse(code)
-	file_bc, _ := compile(tokens, filename)
+	source := NewSource(filename)
+	source.code = loadFile(filename)
+	source = parse(source)
+	file_bc, _ := compile(source.tokens, filename)
 
 	m.Current().Push(out)
 	m.Current().Push(in)
@@ -236,9 +237,10 @@ func bl_warn(m *Meta) {
 func do(m *Meta) {
 	filename := string(m.Current().Pop().(T))
 
-	code := loadFile(filename)
-	tokens := parse(code)
-	file_bc, _ := compile(tokens, filename)
+	source := NewSource(filename)
+	source.code = loadFile(filename)
+	source = parse(source)
+	file_bc, _ := compile(source.tokens, filename)
 
 	doBC(m, file_bc)
 }
@@ -246,9 +248,10 @@ func do(m *Meta) {
 func bload(m *Meta) {
 	filename := string(m.Current().Pop().(T))
 
-	code := loadFile(filename)
-	tokens := parse(code)
-	file_bc, _ := compile(tokens, filename)
+	source := NewSource(filename)
+	source.code = loadFile(filename)
+	source = parse(source)
+	file_bc, _ := compile(source.tokens, filename)
 	m.Current().Push(B(file_bc))
 }
 
@@ -645,9 +648,11 @@ func t_to_cv(m *Meta) {
 }
 
 func t_to_b(m *Meta) {
-	code := []rune(string(m.Current().Pop().(T)))
-	tokens := parse(code)
-	ops, _ := compile(tokens, "<t-to-b>")
+	source := new(Source)
+	source.filename = "<t-to-b>"
+	source.code = []rune(string(m.Current().Pop().(T)))
+	source = parse(source)
+	ops, _ := compile(source.tokens, "<t-to-b>")
 	b := B(ops)
 	m.Current().Push(b)
 }
